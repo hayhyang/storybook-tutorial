@@ -241,6 +241,7 @@ textarea {
 
 .icon-star:before {
   content: "\e608";
+  font-size: 1rem;
 }
 
 .icon-face-sad:before {
@@ -322,6 +323,10 @@ textarea {
   color: #555;
 }
 
+.list-item.TASK_INBOX a {
+  color: #ccc;
+}
+
 .list-item.TASK_PINNED .icon-star {
   color: #2cc5d2;
 }
@@ -337,6 +342,13 @@ textarea {
 
 .list-item:hover .checkbox {
   cursor: pointer;
+}
+
+.list-item .actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
 }
 
 .list-item + .list-item {
