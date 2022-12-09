@@ -6,12 +6,15 @@ const defaultTasks = [
   { id: "3", title: "Something else", state: "TASK_INBOX" },
   { id: "4", title: "Something again", state: "TASK_INBOX" },
 ];
+const TaskBoxData = {
+  tasks: defaultTasks,
+  status: "idle",
+  error: null,
+};
 
-const taskBoxData = { tasks: defaultTasks, status: "idle", error: null };
-
-const taskSlice = createSlice({
-  name: "taskBox",
-  initialState: taskBoxData,
+const TasksSlice = createSlice({
+  name: "taskbox",
+  initialState: TaskBoxData,
   reducers: {
     updateTaskState: (state, action) => {
       const { id, newTaskState } = action.payload;
@@ -23,8 +26,12 @@ const taskSlice = createSlice({
   },
 });
 
-export const { updateTaskState } = taskSlice.actions;
+export const { updateTaskState } = TasksSlice.actions;
 
-const store = configureStore({ reducer: taskSlice.reducers });
+const store = configureStore({
+  reducer: {
+    taskbox: TasksSlice.reducer,
+  },
+});
 
 export default store;
