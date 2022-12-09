@@ -26,3 +26,5 @@ const taskSlice = createSlice({
 export const { updateTaskState } = taskSlice.actions;
 
 const store = configureStore({ reducer: taskSlice.reducers });
+
+export default store;

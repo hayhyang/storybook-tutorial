@@ -1,11 +1,36 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTaskState } from "../lib/store";
 
 import Task from "./Task";
 
-export default function TaskList({ loading, tasks, onPinTask, onArchiveTask }) {
+export default function TaskList() {
+  const tasks = useSelector((state) => {
+    const tasksInOrder = [
+      ...state.taskbox.tasks.filter((t) => t.state === "TASK_PINNED"),
+      ...state.taskbox.tasks.filter((t) => t.state !== "TASK_PINNED"),
+    ];
+    const filteredTasks = tasksInOrder.filter(
+      (t) => t.state === "TASK_INBOX" || t.state === "TASK_PINNED"
+    );
+    return filteredTasks;
+  });
+
+  const { status } = useSelector((state) => state.taskbox);
+
+  const dispatch = useDispatch();
+
+  const pinTask = (value) => {
+    dispatch(updateTaskState({ id: value, newTaskState: "TASK_PINNED" }));
+  };
+
+  const archiveTask = (value) => {
+    dispatch(updateTaskState({ id: value, newTaskState: "TASK_ARCHIVED" }));
+  };
+
   const events = {
-    onPinTask,
-    onArchiveTask,
+    onPinTask: (task) => pinTask(task),
+    onArchiveTask: (task) => archiveTask(task),
   };
   const LoadingRow = (
     <div className="loading-item">
@@ -15,7 +40,7 @@ export default function TaskList({ loading, tasks, onPinTask, onArchiveTask }) {
       </span>
     </div>
   );
-  if (loading) {
+  if (status === "loading") {
     return (
       <div className="list-items" data-testid="loading" key={"loading"}>
         {LoadingRow}
