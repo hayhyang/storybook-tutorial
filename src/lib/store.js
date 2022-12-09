@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const defaultTasks = [
   { id: "1", title: "Something", state: "TASK_INBOX" },
@@ -9,4 +9,20 @@ const defaultTasks = [
 
 const taskBoxData = { tasks: defaultTasks, status: "idle", error: null };
 
-const taskSlice = createSlice({ name: "taskBox", initialState: taskBoxData });
+const taskSlice = createSlice({
+  name: "taskBox",
+  initialState: taskBoxData,
+  reducers: {
+    updateTaskState: (state, action) => {
+      const { id, newTaskState } = action.payload;
+      const task = state.tasks.findIndex((task) => task.id === id);
+      if (task >= 0) {
+        state.tasks[task].state = newTaskState;
+      }
+    },
+  },
+});
+
+export const { updateTaskState } = taskSlice.actions;
+
+const store = configureStore({ reducer: taskSlice.reducers });
